@@ -19,6 +19,7 @@ class Config
 
       @note_path = conf['note_path']
       @editor = conf['editor']
+      @cursor = conf['prompt_cursor']
     end
   end
 
@@ -51,6 +52,10 @@ class Config
 
   def editor
     @editor || ENV['EDITOR']
+  end
+
+  def cursor
+    @cursor || '>'
   end
 
   def to_hash
