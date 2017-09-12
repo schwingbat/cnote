@@ -2,7 +2,7 @@ require "ap"
 require "colorize"
 require "fileutils"
 require "time"
-require_relative "note"
+require "cnote/note"
 
 class Notes
   def initialize(config)

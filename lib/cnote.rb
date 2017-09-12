@@ -1,7 +1,7 @@
 require "colorize"
-require_relative "cnote/config"
-require_relative "cnote/notes"
-require_relative "cnote/version"
+require "cnote/config"
+require "cnote/notes"
+require "cnote/version"
 
 # module Cnote
   # Your code goes here...
