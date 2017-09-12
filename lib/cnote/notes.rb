@@ -6,11 +6,7 @@ require "cnote/note"
 class Notes
   def initialize(config)
     @config = config
-    @notes = Dir[File.join(@config.note_path, "**", "*")].select do |file|
-      File.extname(file) == ".md"
-    end.map do |file|
-      Note.new(file)
-    end
+    @notes = Dir[File.join(@config.note_path, "**/*.md")].map { |f| Note.new(f) }
     @filtered = @notes
   end
 
@@ -161,8 +157,8 @@ class Notes
     num = params.first.to_i
     note = @filtered[num - 1]
 
-    if note
-      if confirm("You're #{"sure".italic} you want to delete note #{num.to_s.bold.white} with title #{note.title.bold.white}?")
+    if note and File.exists? note.path
+      if confirm("You're #{'sure'.italic} you want to delete note #{num.to_s.bold.white} with title #{note.title.bold.white}?")
         FileUtils.rm(note.path)
         @notes.delete(note)
         @filtered.delete(note)
@@ -178,12 +174,15 @@ class Notes
   def peek(params)
     note = @filtered[params.first.to_i - 1]
     if note
+      lines = note.content.lines
       puts
       puts "-" * 40
       puts note.title.bold.white
-      puts note.content.split("\n").slice(0, 10)
-      puts
-      puts "... (cont'd) ...".italic.gray
+      puts lines.slice(0, 15)
+      if lines.length > 15
+        puts
+        puts "(#{lines.length - 15} more line#{'s' if lines.length != 16}...)".italic
+      end
       puts "-" * 40
       puts
     else
@@ -280,7 +279,7 @@ class Notes
         tags = note.tags.map { |tag| tag.yellow }
         puts "    tags: " + "[#{tags.join('] [')}]"
       else
-        puts "    <no tags>".gray
+        puts "    <no tags>"
       end
       puts "    modified: " + note.modified.strftime("%a, %b %e %Y, %l:%M%P").italic
       puts "    created:  " + note.created.strftime("%a, %b %e %Y, %l:%M%P").italic

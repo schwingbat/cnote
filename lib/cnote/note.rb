@@ -19,7 +19,9 @@ class Note
     @filename = File.basename(path)
     @path = path
 
-    refresh
+    File.open(@path, "r") do |file|
+      refresh(file.read)
+    end
 
     @modified = File.mtime(@path) if !@modified
     @created = @modified if !@created
@@ -27,19 +29,20 @@ class Note
     @title = "Untitled" if !@title
   end
 
-  def refresh
-    File.open(@path, "r") do |file|
-      file.each_line do |line|
-        line = line.strip
-        if @meta_regex =~ line
-          parse_meta($~[1])
-        elsif !@title
-          if line != ""
-            @title = line.gsub(/#|[^a-z0-9\s\.\-]/i, "").strip
-          end
-        else
-          @content << line + "\n"
+  def refresh(contents)
+    @title = nil
+    @content = ''
+
+    contents.each_line do |line|
+      line = line.strip
+      if @meta_regex =~ line
+        parse_meta($~[1])
+      elsif !@title
+        if line != ""
+          @title = line.gsub(/#|[^a-z0-9\s\.\-]/i, "").strip
         end
+      else
+        @content << line + "\n"
       end
     end
   end
@@ -102,7 +105,7 @@ class Note
       # Leave two empty lines before metadata.
       contents = contents.lines.slice(0, contents.lines.length - trailing_empty).join("")
 
-      contents += "\n\n"
+      contents += "\n"
       contents += "<!--- created: #{@created} -->\n"
       contents += "<!--- modified: #{@modified} -->\n"
       contents += "<!--- tags: #{@tags.join(", ")} -->\n"
@@ -110,6 +113,8 @@ class Note
       File.open(@path, "w") do |file|
         file.write(contents)
       end
+
+      refresh(contents)
     end
   end
 end
