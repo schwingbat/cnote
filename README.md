@@ -11,7 +11,7 @@ First of all, make sure you have a recent version of Ruby installed (including R
 
 ## Usage
 
-CNote will be installed as a command on your machine. To get started, run `cnote`. The first time you run `cnote`, you'll be walked through the basic setup process which will produce a `.cnote.yaml` file within your `$HOME` directory. To skip this, just create the file yourself. Valid options for this file are covered [here](#).
+CNote will be installed as a command on your machine. To get started, run `cnote`. The first time you run `cnote`, you'll be walked through the basic setup process which will produce a `.cnote.yaml` file within your `$HOME` directory. To skip this, just create the file yourself. Valid options for this file are covered [here](#configuration).
 
 ```
 $ cnote
