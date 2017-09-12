@@ -1,7 +1,7 @@
 # CNote
 > CLI notes app for Linux (and probably macOS) ((and maybe Windows Subsystem for Linux)) written in Ruby
 
-CNote is my personal system for managing notes. I wanted something snappy and lightweight that would let me search, tag and edit a folder full of markdown files using just my keyboard and some `vim`mish single-letter commands.
+CNote is my personal system for managing notes. I wanted something snappy and lightweight that would let me search, tag and edit a folder full of markdown files using just my keyboard and some `vim`-ish single-letter commands.
 
 ## Installation
 
