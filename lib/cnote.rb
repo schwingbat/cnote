@@ -3,10 +3,6 @@ require "cnote/config"
 require "cnote/notes"
 require "cnote/version"
 
-# module Cnote
-  # Your code goes here...
-# end
-
 config = Config.new("~/.cnote.yaml")
 
 # Start REPL
