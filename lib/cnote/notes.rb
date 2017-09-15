@@ -123,19 +123,26 @@ class Notes
         else
           return
         end
+      else
+        # Make sure the directory actually exists.
+        FileUtils.mkdir_p(File.join(@config.note_path, rel_path))
       end
 
       system "#{@config.editor} '#{full_path}'"
 
-      note = Note.new(full_path)
-      note.add_tags(tags) if tags.length > 0
-      note.created = Time.new
-      note.update
+      if File.exists?(full_path)
+        note = Note.new(full_path)
+        note.add_tags(tags) if tags.length > 0
+        note.created = Time.new
+        note.update
 
-      @notes << Note.new(full_path)
+        @notes << Note.new(full_path)
 
-      print_list("Created", [note])
-      @filtered = [note]
+        print_list("Created", [note])
+        @filtered = [note]
+      else
+        puts "Scrapped the blank note..."
+      end
     else
       puts "Please enter a filename as the first parameter"
     end
