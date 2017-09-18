@@ -5,11 +5,14 @@ CNote is my personal system for managing notes. I wanted something snappy and li
 
 ## Changelog
 
-### 0.2.0
+### `0.2.0`
 - Added `config` command to adjust configuration within CNote. Try: `config set prompt >>>` or `config get editor`, or even just `config` to edit the file directly. Current config properties are `prompt`, `editor`, and `note_path`.
 
-### 0.1.3 and lower
+### `0.1.1 - 0.1.3`
 - Trial and error gem publishing-related fixes.
+
+### `0.1.0`
+- First release
 
 ## Installation
 
