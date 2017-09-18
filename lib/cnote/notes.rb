@@ -1,6 +1,7 @@
 require "colorize"
 require "fileutils"
 require "time"
+require "ap"
 require "cnote/note"
 
 class Notes
@@ -16,7 +17,7 @@ class Notes
 
   def await_command(message = nil)
     puts message if message
-    print "#{@config.cursor} ".magenta
+    print "#{@config.prompt} ".magenta
     input = STDIN.gets.chomp
 
     # Strip and process
@@ -44,6 +45,8 @@ class Notes
       list
     when "help", "h"
       help
+    when "config", "conf"
+      config(params)
     when "quit", "exit", "close", "q"
       exit
     else
@@ -179,6 +182,10 @@ class Notes
   end
 
   def peek(params)
+    if params&.first&.downcase == 'config'
+      return @config.print
+    end
+
     note = @filtered[params.first.to_i - 1]
     if note
       lines = note.content.lines
@@ -227,10 +234,42 @@ class Notes
     puts "Removed #{params.length - 1} tag#{"s" if params.length != 2} from #{notes.length} note#{"s" if notes.length != 1}."
   end
 
+  def config(params = [])
+    if params.length == 0
+      system "#{@config.editor} #{@config.path}"
+      @config.load
+      return
+    end
+
+    action, key, *value = params
+    value = value.join(" ")
+
+    if action == "get"
+      if key
+        puts "#{key}: \"#{@config.get(key)}\""
+      else
+        @config.print
+      end
+    elsif action == "set"
+      if key
+        if value
+          puts "Config: #{key} changed from '#{@config.get(key)}' to '#{value}'"
+          @config.set(key, value)
+        else
+          puts "Can't set a key to a value if no value is given."
+        end
+      else
+        puts "Can't set a key if one wasn't given."
+      end
+    else
+      puts "Invalid action: #{action}"
+    end
+  end
+
   def help
     puts
     puts "Enter a command with the structure:"
-    puts "    #{@config.cursor} action parameter(s)"
+    puts "    #{@config.prompt} action parameter(s)"
     puts
     puts "Actions:"
     puts "    - #{"new".bold.white} #{"filename".italic}"
@@ -241,6 +280,7 @@ class Notes
     puts "    - #{"untag".bold.white} #{"note_number".italic}"
     puts "    - #{"search".bold.white} #{"search_term".italic}"
     puts "    - #{"list".bold.white}"
+    puts "    - #{"config".bold.white} #{"(set/get)".italic} #{"key".italic} [#{"value".italic}]"
     puts "    - #{"exit".bold.white}"
     puts "    - #{"help".bold.white}"
     puts

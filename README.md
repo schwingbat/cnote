@@ -3,6 +3,14 @@
 
 CNote is my personal system for managing notes. I wanted something snappy and lightweight that would let me search, tag and edit a folder full of markdown files using just my keyboard and some `vim`-ish single-letter commands.
 
+## Changelog
+
+### 0.2.0
+- Added `config` command to adjust configuration within CNote. Try: `config set prompt >>>` or `config get editor`, or even just `config` to edit the file directly. Current config properties are `prompt`, `editor`, and `note_path`.
+
+### 0.1.3 and lower
+- Trial and error gem publishing-related fixes.
+
 ## Installation
 
 First of all, make sure you have a recent version of Ruby installed (including RubyGems). I'm using 2.4.0. Then run:

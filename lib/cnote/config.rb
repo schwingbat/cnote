@@ -1,28 +1,22 @@
 require "yaml"
 require "fileutils"
+require "ap"
 
 class Config
-  attr_reader :note_path
+  attr_reader :note_path, :path
+  attr_writer :prompt, :editor
 
   def initialize(path)
-    path = File.expand_path path
+    @path = File.expand_path(path)
 
-    if !File.exists? path
+    if !File.exists?(@path)
       puts "Welcome, new user!"
 
       @note_path = get_note_path
-
-      File.open(path, "w") do |file|
-        file.write(YAML.dump(to_hash))
-      end
-
+      save
       puts "Okay, we're ready to go!"
     else
-      conf = YAML.load(File.read(path))
-
-      @note_path = conf["note_path"]
-      @editor = conf["editor"]
-      @cursor = conf["prompt"]
+      load
     end
   end
 
@@ -57,13 +51,52 @@ class Config
     @editor || ENV["EDITOR"]
   end
 
-  def cursor
-    @cursor || ">"
+  def prompt
+    @prompt || ">"
+  end
+
+  def set(key, val)
+    case key.downcase
+    when 'editor'
+      @editor = val
+    when 'prompt'
+      @prompt = val
+    end
+    save
+  end
+
+  def get(key)
+    case key.downcase
+    when 'editor'
+      editor
+    when 'prompt'
+      prompt
+    end
+  end
+
+  def save
+    File.open(@path, "w") do |file|
+      file.write(YAML.dump(to_hash))
+    end
+  end
+
+  def load
+    conf = YAML.load(File.read(@path))
+
+    @note_path = conf["note_path"]
+    @editor = conf["editor"]
+    @prompt = conf["prompt"]
+  end
+
+  def print
+    ap to_hash
   end
 
   def to_hash
-    {
-      "note_path" => @note_path
-    }
+    hash = Hash.new
+    hash["note_path"] = @note_path if @note_path
+    hash["editor"] = @editor if @editor
+    hash["prompt"] = @prompt if @prompt
+    return hash
   end
 end
