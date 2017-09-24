@@ -5,6 +5,13 @@ CNote is my personal system for managing notes. I wanted something snappy and li
 
 ## Changelog
 
+### `0.3.0`
+> Sept. 23rd, 2017
+- Added `tags` command to view all tags used in your notes.
+- Note numbers are now consistent from program start to program close. No more confusing indices relative to the last listing.
+- Note numbers also no longer correspond to array indices, so deleting multiple notes shouldn't cause problems anymore.
+- Expanded the `delete` command to take a comma separated list of notes to delete.
+
 ### `0.2.0`
 - Added `config` command to adjust configuration within CNote. Try: `config set prompt >>>` or `config get editor`, or even just `config` to edit the file directly. Current config properties are `prompt`, `editor`, and `note_path`.
 

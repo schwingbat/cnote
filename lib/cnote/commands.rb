@@ -275,17 +275,44 @@ module Commands
     puts
     puts "Actions:"
     puts "    - #{"new".bold.white} #{"filename".italic}"
+    puts "        Create a new note.".italic
+    puts
     puts "    - #{"edit".bold.white} #{"note_number".italic}"
+    puts "        Open a note for editing or reading.".italic
+    puts
     puts "    - #{"delete".bold.white} #{"note_number".italic}"
+    puts "        Delete a note.".italic
+    puts
     puts "    - #{"peek".bold.white} #{"note_number".italic}"
-    puts "    - #{"tag".bold.white} #{"note_number".italic}"
-    puts "    - #{"untag".bold.white} #{"note_number".italic}"
-    puts "    - #{"search".bold.white} #{"search_term".italic}"
+    puts "        Print the first few lines of a note.".italic
+    puts
+    puts "    - #{"tag".bold.white} #{"note_number".italic} #{"tag".italic} #{"tag".italic} #{"tag".italic} ..."
+    puts "        Add the space-delimited list of tags to a given note.".italic
+    puts
+    puts "    - #{"untag".bold.white} #{"note_number".italic} #{"tag".italic} #{"tag".italic} ..."
+    puts "        Remove the space-delimited list of tags from a given note.".italic
+    puts
+    puts "    - #{"tags".bold.white}"
+    puts "        List all tags and the number of notes each one is applied to.".italic
+    puts
+    puts "    - #{"search".bold.white} #{"search_term".italic} ( +t/-t #{"tag".italic} #{"tag".italic} ... )"
+    puts "        Find notes that match the search term, or the specified tags.".italic
+    puts
     puts "    - #{"info".bold.white} #{"note_number(s)".italic}"
+    puts "        Display detailed metadata for one or more (comma-delimited) note numbers.".italic
+    puts
     puts "    - #{"list".bold.white}"
+    puts "        List every single note in your notes folder.".italic
+    puts
     puts "    - #{"config".bold.white} #{"(set/get)".italic} #{"key".italic} [#{"value".italic}]"
+    puts "        Manage your CNote configuration, either by setting keys through commands,".italic
+    puts "        or by just writing 'config' to open the file in your editor.".italic
+    puts
     puts "    - #{"exit".bold.white}"
+    puts "        Leave CNote.".italic
+    puts
     puts "    - #{"help".bold.white}"
+    puts "        You are here!".italic
     puts
     puts "Alternate actions:"
     puts "  Most actions also have aliases that do the same thing."
