@@ -6,14 +6,12 @@ class Note
               :tags,
               :filename,
               :path,
-              :modified,
-              :created
+              :modified
+  attr_accessor :index, :created
 
-  attr_writer :created
+  @@meta_regex = /^<!\-{3}(.*)\-{2}>/
 
   def initialize(path)
-    @meta_regex = /^<!\-{3}(.*)\-{2}>/
-
     @content = ""
     @tags = []
     @filename = File.basename(path)
@@ -35,16 +33,17 @@ class Note
 
     contents.each_line do |line|
       line = line.strip
-      if @meta_regex =~ line
+      if @@meta_regex =~ line
         parse_meta($~[1])
-      elsif !@title
-        if line != ""
-          @title = line.gsub(/#|[^a-z0-9\s\.\-]/i, "").strip
-        end
+      elsif !@title && line[0] == '#'
+        @title = line.gsub(/#|[^a-z0-9\s\.\-]/i, "").strip
       else
         @content << line + "\n"
       end
     end
+
+    # If no Markdown header is found, name it by the file's name.
+    @title = File.basename(@filename, File.extname(@filename)) if !@title
   end
 
   def add_tags(tags)
@@ -57,6 +56,14 @@ class Note
     @tags = @tags - tags
     @modified = Time.new
     write_meta
+  end
+
+  def title_limit(length)
+    if @title.length >= length
+      @title.strip.slice(0, length - 3) + "..." 
+    else
+      @title
+    end
   end
 
   def excerpt
